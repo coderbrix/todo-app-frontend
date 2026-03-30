@@ -17,7 +17,7 @@ const Sidebar = () => {
           R
         </div>
         <div className="flex-1">
-          <p className="text-sm font-medium">Raju</p>
+          <p className="text-sm font-medium">Rabby</p>
         </div>
       </div>
 
