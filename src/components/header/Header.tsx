@@ -1,6 +1,6 @@
 const Header = () => {
   return (
-    <div>header</div>
+    <div>Desktop</div>
   );
 };
 
