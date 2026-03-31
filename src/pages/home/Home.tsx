@@ -1,10 +1,12 @@
-import Component1 from "./components/component1/component1"
+import Layout from "../../components/Layout/Layout"
+import Navbar from "../../components/Layout/Navbar"
+
 
 const Home = () => {
   return (
     <div>
-      homepage
-      <Component1/>
+  
+      <Layout/>
     </div>
   )
 }
