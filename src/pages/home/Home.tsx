@@ -1,12 +1,11 @@
-import Layout from "../../components/Layout/Layout"
-import Navbar from "../../components/Layout/Navbar"
+
+
 
 
 const Home = () => {
   return (
     <div>
-  
-      <Layout/>
+      <h1>Home Page</h1>
     </div>
   )
 }

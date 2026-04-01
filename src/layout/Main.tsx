@@ -4,14 +4,16 @@ import Sidebar from "../components/Layout/Sidebar";
 
 const Main = () => {
     return (
-        <div>
-            <Header />
+        <div className="flex">
             <Sidebar />
-            <div className="flex-1 bg-gray-100 min-h-screen p-6"></div>
-            <Outlet />
-    
+            <div className="flex-1">
+                <Header />
+                <div className="p-6">
+                    <Outlet />
+                </div>
+            </div>
         </div>
     );
 };
 
-export default Main
+export default Main;

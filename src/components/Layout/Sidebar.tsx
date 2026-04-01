@@ -1,23 +1,40 @@
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CalendarDays, InboxIcon } from "lucide-react";
 
 const Sidebar = () => {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
+  
+  const [userName, setUserName] = useState<string>("");
+  const [userInitial, setUserInitial] = useState<string>("");
+
   const workspaces = ["Dtask", "Nexus", "Everstudio"];
+
+
+  useEffect(() => {
+    const currentUser = localStorage.getItem("currentUser");
+    if (currentUser) {
+      const userData = JSON.parse(currentUser);
+      setUserName(userData.name);
+      setUserInitial(userData.name.charAt(0).toUpperCase());
+    } else {
+      setUserName("Guest");
+      setUserInitial("G");
+    }
+  }, []);
 
   return (
     <div className="w-64 h-screen bg-white/70 backdrop-blur-md border-r px-4 py-5 flex flex-col">
-      {/* Header */}
+      
 
-      {/* Profile */}
+      
       <div className="flex items-center gap-3 mb-6">
         <div className="w-9 h-9 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold">
-          R
+          {userInitial}
         </div>
         <div className="flex-1">
-          <p className="text-sm font-medium">Rabby</p>
+          <p className="text-sm font-medium">{userName}</p>
         </div>
       </div>
 

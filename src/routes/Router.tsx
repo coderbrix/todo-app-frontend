@@ -6,25 +6,24 @@ import Login from "../components/Authentication/Login/Login";
 import SignUp from "../components/Authentication/SignUp/SignUp";
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Main/>,
-        errorElement: <ErrorPage/>,
-        children:[
-            {
-                path: "/",
-                element: <Home/>
-            },
-            {
-                path: "/login",
-                element: <Login/>
-            },
-            {
-                path: "/signup",
-                element: <SignUp/>
-            }
-        ]
-    }
+  {
+    path: "/",
+    element: <Login />   
+  },
+  {
+    path: "/signup",
+    element: <SignUp />
+  },
+  {
+    path: "/home",
+    element: <Main />,   
+    children: [
+      {
+        index: true,
+        element: <Home />
+      }
+    ]
+  }
 ]);
 
 export default router;
