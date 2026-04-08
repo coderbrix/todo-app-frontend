@@ -7,6 +7,7 @@ import SignUp from "../components/Authentication/SignUp/SignUp";
 import InboxPage from "../features/inbox/InboxPage";
 import TodayPage from "../features/today/TodayPage";
 
+
 const router = createBrowserRouter([
   {
     path: "/",
