@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import './Login.css'
+import "./Login.css";
 
 export default function Login() {
-
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -12,7 +11,6 @@ export default function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  
   useEffect(() => {
     setTimeout(() => {
       setEmail("");
@@ -23,7 +21,6 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setError("");
 
     if (!email || !password) {
@@ -33,39 +30,39 @@ export default function Login() {
     try {
       setLoading(true);
 
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const res = await fetch("http://localhost:4000/auth/sign-in", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
+      });
 
-      const storedUser = localStorage.getItem("user");
-      
-      if (!storedUser) {
-        if (email === "test@gmail.com" && password === "123456") {
-          localStorage.setItem("token", "demo123");
-          localStorage.setItem("currentUser", JSON.stringify({
-            name: "Test User",
-            email: "test@gmail.com"
-          }));
-          navigate("/home");
-          return;
-        } else {
-          throw new Error("No account found. Please sign up first.");
-        }
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
       }
 
-      const userData = JSON.parse(storedUser);
-      
-      if (userData.email === email && userData.password === password) {
-        localStorage.setItem("token", "demo123");
-        
-        localStorage.setItem("currentUser", JSON.stringify({
-          name: userData.name,  
-          email: userData.email
-        }));
-        
-        navigate("/home");
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
+
+      if (data.user) {
+        localStorage.setItem("currentUser", JSON.stringify(data.user));
       } else {
-        throw new Error("Invalid email or password");
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({
+            email,
+          })
+        );
       }
 
+      navigate("/home");
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -99,9 +96,7 @@ export default function Login() {
             className="w-full p-3 border rounded-xl"
           />
 
-          {error && (
-            <p className="text-red-500 text-sm">{error}</p>
-          )}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
           <button
             type="submit"
@@ -116,7 +111,8 @@ export default function Login() {
           Don't have an account?
           <span
             onClick={() => navigate("/signup")}
-            className="text-blue-500 ml-1 cursor-pointer">
+            className="text-blue-500 ml-1 cursor-pointer"
+          >
             Sign Up
           </span>
         </p>

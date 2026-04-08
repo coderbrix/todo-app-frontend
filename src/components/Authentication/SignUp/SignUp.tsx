@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ChangeEvent, FormEvent } from "react";
-import './SignUp.css';
+import "./SignUp.css";
 
 interface FormData {
   name: string;
@@ -11,53 +11,50 @@ interface FormData {
 }
 
 export default function SignUp() {
-
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
 
   const [error, setError] = useState<string>("");
   const [success, setSuccess] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  
   useEffect(() => {
-    
     setFormData({
       name: "",
       email: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
     });
-    
-    
-    const form = document.querySelector('form');
-    if (form) {
-      form.reset();
-    }
-    
+
     setError("");
     setSuccess("");
   }, []);
 
-  const handleChange = (e:ChangeEvent<HTMLInputElement>) =>  {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
 
-  const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setError("");
     setSuccess("");
 
-    if (!formData.name || !formData.email || !formData.password) {
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.confirmPassword
+    ) {
       return setError("All fields are required");
     }
 
@@ -67,40 +64,37 @@ export default function SignUp() {
 
     try {
       setLoading(true);
-      
-      
-      const existingUser = localStorage.getItem("user");
-      if (existingUser) {
-        const userData = JSON.parse(existingUser);
-        if (userData.email === formData.email) {
-          throw new Error("Email already exists");
-        }
+
+      const res = await fetch("http://localhost:4000/auth/sign-up", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Signup failed");
       }
 
-      
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      
-      localStorage.setItem("user", JSON.stringify({
-        name: formData.name, 
-        email: formData.email,
-        password: formData.password
-      }));
-      
       setSuccess("Signup successful...");
-      
-      
+
       setFormData({
         name: "",
         email: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
       });
-      
-      setTimeout(() => {
-        navigate("/");   
-      }, 1000);
 
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
@@ -158,13 +152,9 @@ export default function SignUp() {
             className="w-full p-3 border rounded-xl"
           />
 
-          {error && (
-            <p className="text-red-500 text-sm">{error}</p>
-          )}
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
-          {success && (
-            <p className="text-green-500 text-sm">{success}</p>
-          )}
+          {success && <p className="text-green-500 text-sm">{success}</p>}
 
           <button
             type="submit"
@@ -179,7 +169,8 @@ export default function SignUp() {
           Already have an account?
           <span
             onClick={() => navigate("/")}
-            className="text-blue-500 ml-1 cursor-pointer">
+            className="text-blue-500 ml-1 cursor-pointer"
+          >
             Login
           </span>
         </p>
