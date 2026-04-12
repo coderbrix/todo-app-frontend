@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import type { ChangeEvent, FormEvent } from "react";
-import "./SignUp.css";
+
+const API_BASE_URL = "https://todo-app-api-m9zt.onrender.com";
+
 
 interface FormData {
   name: string;
@@ -65,7 +67,7 @@ export default function SignUp() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:4000/auth/sign-up", {
+      const res = await fetch(`${API_BASE_URL}/auth/sign-up`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -176,5 +178,6 @@ export default function SignUp() {
         </p>
       </div>
     </div>
+    
   );
 }
