@@ -11,31 +11,32 @@ import TodayPage from "../features/today/TodayPage";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "/",
-        element: <Home />,
-      },
-    ],
-  },
-  {
-    path: "inbox",
-    element: <InboxPage />,
-  },
-  {
-    path: "today",
-    element: <TodayPage />,
-  },
-  {
-    path: "/login",
     element: <Login />,
   },
   {
     path: "/signup",
     element: <SignUp />,
   },
+  {
+    path: "/home",
+    element: <MainLayout />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "inbox",
+        element: <InboxPage />,
+      },
+      {
+        path: "today",
+        element: <TodayPage />,
+      },
+    ],
+  },
+  
 ]);
 
 export default router;
