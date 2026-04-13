@@ -7,6 +7,7 @@ import {
   Italic,
   Link,
   Underline,
+  ExternalLink,
 } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -160,11 +161,9 @@ export default function Markdown() {
       {/* LEFT */}
       <div className="w-full md:w-1/2 h-full bg-white/80 border shadow-md rounded-xl p-4 flex flex-col">
 
-        {/* HEADER WITH MODE */}
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-sm font-semibold">Editor</h2>
 
-          {/* MODE BADGE */}
           <span
             className={`text-xs px-2 py-1 rounded-full font-medium ${
               mode === "markdown"
@@ -176,7 +175,6 @@ export default function Markdown() {
           </span>
         </div>
 
-        {/* TOOLBAR */}
         <div className="flex gap-2 mb-3">
           <button onClick={() => wrapText("**", "**")} className="p-1.5 bg-white shadow rounded">
             <Bold size={14} />
@@ -198,7 +196,6 @@ export default function Markdown() {
             + List
           </button>
 
-          {/* SWITCH BUTTON WITH MODE */}
           <button
             onClick={switchMode}
             className="ml-auto flex items-center gap-1 px-2 text-xs bg-black text-white rounded"
@@ -208,7 +205,6 @@ export default function Markdown() {
           </button>
         </div>
 
-        {/* TEXTAREA */}
         <textarea
           ref={textareaRef}
           value={input}
@@ -249,7 +245,23 @@ export default function Markdown() {
                 </button>
 
                 <div className={`text-xs ${todo.done ? "line-through text-gray-400" : ""}`}>
-                  <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                    components={{
+                      a: ({ href, children }) => (
+                        <a
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 underline hover:text-blue-800 cursor-pointer inline-flex items-center gap-1"
+                        >
+                          {children}
+                          <ExternalLink size={12} />
+                        </a>
+                      ),
+                    }}
+                  >
                     {todo.text}
                   </ReactMarkdown>
                 </div>
