@@ -1,5 +1,7 @@
+import RichEditor from "../../components/richeditor/RichEditor";
+
 const Home = () => {
-  return <div>hello</div>;
+  return <RichEditor/>;
 };
 
 export default Home;
