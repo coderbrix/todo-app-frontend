@@ -6,12 +6,17 @@ import Login from "../components/Authentication/Login/Login";
 import SignUp from "../components/Authentication/SignUp/SignUp";
 import InboxPage from "../features/inbox/InboxPage";
 import TodayPage from "../features/today/TodayPage";
+import RichEditor from "../components/richeditor/RichEditor";
 
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
+  },
+  {
+    path: "/richeditor",
+    element: <RichEditor />,
   },
   {
     path: "/signup",
